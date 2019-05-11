@@ -11,15 +11,6 @@ class Server:
                 [15, 16, 17, 18, 19],
                 [20, 21, 22, 23, 24] ]
 
-    
-
-    diagonales_ind = [ [ 0,  6, 12, 18, 24],
-                       [ 4,  8, 12, 16, 20] ]
-    
-    but = np.identity(5)
-
-    ind_but = np.where(but == 1)
-
     @cherrypy.expose
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
@@ -39,12 +30,8 @@ class Server:
 
         cube = random.choice(case)
 
-        deplacements = { 'N': -5,
-                         'S': +5,
-                         'E':  1,
-                         'W': -1 }
 
-        orientation = random.choice(list(deplacements.keys()))
+        orientation = random.choice(['N','S','E','W'])
         
         interdits = { 'E': [4, 9, 14, 19, 24],
                       'W': [0, 5, 10, 15, 20],
@@ -83,30 +70,8 @@ class Server:
         elif cube in interdits['W']:
             orientation = random.choice(['N','S','E'])
                 
-        print("hello")
-        if len(body['moves']) == 0:
-            cube = 20
-            orientation = 'N'
 
-        #if len(body['moves']) == 1:
-            cube = 20
-            orientation = 'N'
-
-        if len(body['moves']) == 2:
-            cube = 24
-            orientation = 'W'
-
-        #if len(body['moves']) == 3:
-            cube = 0
-            orientation = 'S'
-
-        if len(body['moves']) == 4:
-            cube = 24
-            orientation = 'N'
         
-        #if len(body['moves']) == 5:
-            cube = 24
-            orientation = 'S'
         
     
         #print(body['move'])
