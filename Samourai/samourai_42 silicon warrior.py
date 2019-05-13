@@ -91,7 +91,24 @@ class Server:
             if len(body["moves"]) == 5:# troisieme coup
                 if game_island[4][4] == None: # coup valide
                     return {"move": {"cube": 24,"direction": 'W'},"message": "Ca commence fort !"}
-            
+
+
+        ### milieu de partie
+        lin_you_nb = list()  # contient le nombre de 'you par ligne'
+        for line in game_island:  # remplissage
+            lin_you_nb.append(line.count(you))
+
+        col_you_nb = list() # nombre de you par collone
+        for col in game_island_tr:
+            col_you_nb.append(col.count(you))
+
+        lin_adv_nb = list() # contient le nombre de non you 
+        for line in game_island:
+            lin_adv_nb.append(line.count(adv))
+        
+        col_adv_nb = list() 
+        for col in game_island_tr:
+            col_adv_nb.append(col.count(adv))
 
         ### est il possible de gagner par la grande diagonale ?, on utilise return pour stopper les calculs
         grand_diag = [game_island[0][0] , game_island[1][1] , game_island[2][2] , game_island[3][3], game_island[4][4]]
@@ -122,7 +139,6 @@ class Server:
                             if game_island[k][4] == you or game_island[k][4] == None: # coup valide
                                 return {"move": {"cube": grid_island[k][4],"direction": 'W'},"message": "checkmate"}
 
-
         ### est-il possible de gagner par la petite diagonale ? On utilise return pour stopper les calculs
         petit_diag = [game_island[0][4] , game_island[1][3] , game_island[2][2] , game_island[3][1] , game_island[4][0]]
         if petit_diag.count(you) == 4: # on est à un cube de la victoire
@@ -151,26 +167,8 @@ class Server:
                                     return {"move": {"cube": grid_island[0][k],"direction": 'S'},"message": "checkmate"} 
                             if game_island[k][k-1] == you: # il est en echec par le cube à gauche
                                 if game_island[k][4] == you or game_island[k][4] == None: # coup valide
-                                    return {"move": {"cube": grid_island[k][4],"direction": 'W'},"message": "checkmate"}
-        ### milieu de partie
-        lin_you_nb = list()  # contient le nombre de 'you par ligne'
-        for line in game_island:  # remplissage
-            lin_you_nb.append(line.count(you))
-
-        col_you_nb = list() # nombre de you par collone
-        for col in game_island_tr:
-            col_you_nb.append(col.count(you))
-
-        lin_adv_nb = list() # contient le nombre de non you 
-        for line in game_island:
-            lin_adv_nb.append(line.count(adv))
-        
-        col_adv_nb = list() 
-        for col in game_island_tr:
-            col_adv_nb.append(col.count(adv))
-        
-
-        ## y'a t-il une victoire immmédiate ?
+                                    return {"move": {"cube": grid_island[k][4],"direction": 'W'},"message": "checkmate"}       
+        ### y'a t-il une victoire immmédiate horizontale ou verticale ?
         if max(lin_you_nb) == 4: 
             the_line = lin_you_nb.index(4) # ligne offrant l'echec et mat
             deja_aligne = list() # indices des cases deja alignées
@@ -196,8 +194,65 @@ class Server:
             if deja_aligne == list(range(1,5)):  # tt serree vers le bas 
                 if game_island_tr[the_col][0] == None:
                     return {"move": {"cube": grid_island_tr[the_col][0],"direction": 'S'},"message": "checkmate"}
-        #if you == 0:
-        ## y'a t'il une défaite immediate ?
+                            
+        ### est il possible de perdre par la grande diagonale ?, on utilise return pour stopper les calculs
+        grand_diag = [game_island[0][0] , game_island[1][1] , game_island[2][2] , game_island[3][3], game_island[4][4]]
+        if grand_diag.count(adv) == 4:
+            for k in range(5):
+                if game_island[k][k] == adv:
+                    if k == 0:
+                        if game_island[4][0] == None or game_island[4][0] == you:
+                            return {"move": {"cube": grid_island[4][0],"direction": 'N'},"message": "checkmate"}
+                        elif game_island[0][4] == None or game_island[0][4] == you:
+                            return {"move": {"cube": grid_island[0][4],"direction": 'W'},"message": "checkmate"}
+                    if k == 4:
+                        if game_island[4][0] == None or game_island[4][0] == you:
+                            return {"move": {"cube": grid_island[4][0],"direction": 'E'},"message": "checkmate"}
+                        elif game_island[0][4] == None or game_island[0][4] == you:
+                            return {"move": {"cube": grid_island[0][4],"direction": 'S'},"message": "checkmate"}
+                    if k == 1 or k == 2 or k == 3:
+                        if game_island[k-1][k] == you: # on le deloge par le haut
+                            if game_island[4][k] == you or game_island[4][k] == None: # coup valide
+                                return {"move": {"cube": grid_island[4][k],"direction": 'N'},"message": "checkmate"} 
+                        if game_island[k][k+1] == you: # on le deloge par la droite
+                            if game_island[k][0] == you or game_island[k][0] == None: #coup valide
+                                return {"move": {"cube": grid_island[k][0],"direction": 'E'},"message": "checkmate"}
+                        if game_island[k+1][k] == you: # on le deloge par au dessus
+                            if game_island[0][k] == you or game_island[0][k] == None: # coup valide
+                                return {"move": {"cube": grid_island[0][k],"direction": 'S'},"message": "checkmate"} 
+                        if game_island[k][k-1] == you: # on le deloge par la gauche
+                            if game_island[k][4] == you or game_island[k][4] == None: # coup valide
+                                return {"move": {"cube": grid_island[k][4],"direction": 'W'},"message": "checkmate"}
+        ### est-il possible de perdre par la petite diagonale ? On utilise return pour stopper les calculs
+        petit_diag = [game_island[0][4] , game_island[1][3] , game_island[2][2] , game_island[3][1] , game_island[4][0]]
+        if petit_diag.count(adv) == 4: # on est à un cube de la victoire
+            for i in range(5):
+                for j in range(5):
+                    if (game_island[i][j] in petit_diag) and (game_island[i][j] == adv):
+                        if i == 0 and j == 4:
+                            if game_island[0][0] == None or game_island[0][0] == you:
+                                return {"move": {"cube": grid_island[0][0],"direction": 'E'},"message": "checkmate"}
+                            elif game_island[4][4] == None or game_island[4][4] == you:
+                                return {"move": {"cube": grid_island[4][4],"direction": 'N'},"message": "checkmate"}
+                        if i == 4 and j ==0:
+                            if game_island[0][0] == None or game_island[0][0] == you:
+                                return {"move": {"cube": grid_island[0][0],"direction": 'S'},"message": "checkmate"}
+                            elif game_island[4][4] == None or game_island[4][4] == you:
+                                return {"move": {"cube": grid_island[4][4],"direction": 'W'},"message": "checkmate"}
+                        if (i==1 and j == 3) or (i==2 and j == 2) or (i == 3 and j == 1):
+                            if game_island[k-1][k] == you: 
+                                if game_island[4][k] == you or game_island[4][k] == None: # coup valide
+                                    return {"move": {"cube": grid_island[4][k],"direction": 'N'},"message": "checkmate"} 
+                            if game_island[k][k+1] == you: 
+                                if game_island[k][0] == you or game_island[k][0] == None: #coup valide
+                                    return {"move": {"cube": grid_island[k][0],"direction": 'E'},"message": "checkmate"}
+                            if game_island[k+1][k] == you: 
+                                if game_island[0][k] == you or game_island[0][k] == None: # coup valide
+                                    return {"move": {"cube": grid_island[0][k],"direction": 'S'},"message": "checkmate"} 
+                            if game_island[k][k-1] == you: 
+                                if game_island[k][4] == you or game_island[k][4] == None: # coup valide
+                                    return {"move": {"cube": grid_island[k][4],"direction": 'W'},"message": "checkmate"}
+        ### y'a t'il une défaite immediate horizontale ou verticale ?
         if max(lin_adv_nb) == 4 :
             the_line = lin_adv_nb.index(4) # ligne menacant le mat
             for j in range(5): # parcour de la ligne problematique
@@ -214,7 +269,6 @@ class Server:
                     if the_line == 4:
                         if game_island[0][j] == None or game_island[0][j] == you: # coup valide
                             return {"move": {"cube": grid_island[0][j],"direction": 'S'},"message": "Bien essayé..."}
-
         if max(col_adv_nb) == 4:
             the_col = col_adv_nb.index(4) # collonne menacant de mat
             for i in range(5): # parcour de la collonne problematique 
@@ -230,10 +284,8 @@ class Server:
                             return {"move": {"cube": grid_island_tr[0][i],"direction": 'E'},"message": "Bien essayé..."}
                     if the_col == 4:
                         if game_island_tr[0][i] == None or game_island_tr[0][i] == you: #coup valide
-                            return {"move": {"cube": grid_island_tr[0][i],"direction": 'E'},"message": "Bien essayé..."}                            
- 
-
-        ### on joue un coup classique
+                            return {"move": {"cube": grid_island_tr[0][i],"direction": 'E'},"message": "Bien essayé..."}
+        ### on joue un coup classique qui maximise nos chances 
         ## Situation A : les lignes sont plus prometteuses que les collones
         if max(lin_you_nb) >= max(col_you_nb): 
             the_line = lin_you_nb.index(max(lin_you_nb))  # indice de la ligne la plus prometteuse
@@ -265,7 +317,7 @@ class Server:
                         if game_island[0][j] == None or game_island[0][j] == you: # coup valide
                             cube , orientation = grid_island[0][j] , 'S' 
                             played = True
-        # Situation B : les collones sont plus prometteuses que les lignes
+        ## Situation B : les collones sont plus prometteuses que les lignes
         elif max(lin_you_nb) < max(col_you_nb):
             the_col = col_you_nb.index(max(col_you_nb))  # indice de la collonne la plus prometteuse
             played = False
