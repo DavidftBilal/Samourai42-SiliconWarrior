@@ -168,7 +168,70 @@ class Server:
         col_adv_nb = list() 
         for col in game_island_tr:
             col_adv_nb.append(col.count(adv))
-            
+        
+
+        ## y'a t-il une victoire immmédiate ?
+        if max(lin_you_nb) == 4: 
+            the_line = lin_you_nb.index(4) # ligne offrant l'echec et mat
+            deja_aligne = list() # indices des cases deja alignées
+            for k in range(5):
+                if game_island[the_line][k] == you:
+                    deja_aligne.append(k)
+            if deja_aligne == list(range(4)): # tt serrees a gauche
+                if game_island[the_line][4] == None:
+                    return {"move": {"cube": grid_island[the_line][4],"direction": 'W'},"message": "checkmate"}
+
+            if deja_aligne == list(range(1,5)): # tt serree a droite
+                if game_island[the_line][0] == None:
+                    return {"move": {"cube": grid_island[the_line][0],"direction": 'E'},"message": "checkmate"}
+        if max(col_you_nb) == 4:
+            the_col = col_you_nb.index(4) # collone offrant l'echec et mat.
+            deja_aligne = list() # indices des cases deja alignee
+            for m in range(5):
+                if game_island_tr[the_col][m] == you:
+                    deja_aligne.append(m)
+            if deja_aligne == list(range(4)): # tt serre vers le haut
+                if game_island_tr[the_col][4] == None:
+                    return {"move": {"cube": grid_island_tr[the_col][4],"direction": 'N'},"message": "checkmate"}
+            if deja_aligne == list(range(1,5)):  # tt serree vers le bas 
+                if game_island_tr[the_col][0] == None:
+                    return {"move": {"cube": grid_island_tr[the_col][0],"direction": 'S'},"message": "checkmate"}
+                  
+
+        ## y'a t'il une défaite immediate ?
+        if max(lin_adv_nb) == 4:
+            the_line = lin_adv_nb.index(4) # ligne menacant le mat
+            for j in range(5): # parcour de la ligne problematique
+                if game_island[the_line][j] == adv:
+                    if the_line != 0 and game_island[the_line - 1][j] != adv: # faudrait lui realigner le pion
+                        if game_island[4][j] == None or game_island[4][j] == you: # coup valide
+                            return {"move": {"cube": grid_island[4][j],"direction": 'N'},"message": "Bien essayé"}
+                    if the_line == 0:
+                        if game_island[4][j] == None or game_island[4][j] == you: # coup valide
+                            return {"move": {"cube": grid_island[4][j],"direction": 'N'},"message": "Bien essayé"}
+                    if the_line !=4 and game_island[the_line + 1][j] != adv:
+                        if game_island[0][j] == None or game_island[0][j] == you: # coup valide
+                            return {"move": {"cube": grid_island[0][j],"direction": 'S'},"message": "Bien essayé"}
+                    if the_line == 4:
+                        if game_island[0][j] == None or game_island[0][j] == you: # coup valide
+                            return {"move": {"cube": grid_island[0][j],"direction": 'S'},"message": "Bien essayé"}
+        if max(col_adv_nb) == 4:
+            the_col = col_adv_nb.index(4) # collonne menacant de mat
+            for i in range(5): # parcour de la collonne problematique 
+                if game_island_tr[the_col][i] == adv:
+                    if the_col != 0 and game_island_tr[the_col - 1][i] != adv:
+                        if game_island_tr[4][i] == None or game_island_tr[4][i] == you: # coup valide
+                            return {"move": {"cube": grid_island_tr[4][i],"direction": 'W'},"message": "Bien essayé"}
+                    if the_col == 0:
+                        if game_island_tr[4][i] == None or game_island_tr[4][i] == you: # coup valide
+                            return {"move": {"cube": grid_island_tr[4][i],"direction": 'W'},"message": "Bien essayé"}
+                    if the_col != 4 and game_island_tr[the_col + 1][i] != adv:
+                        if game_island_tr[0][i] == None or game_island_tr[0][i] == you: # coup valide
+                            return {"move": {"cube": grid_island_tr[0][i],"direction": 'E'},"message": "Bien essayé"}
+                    if the_col == 4:
+                        if game_island_tr[0][i] == None or game_island_tr[0][i] == you: #coup valide
+                            return {"move": {"cube": grid_island_tr[0][i],"direction": 'E'},"message": "Bien essayé"}                            
+
         ### on joue un coup classique
         ## Situation A : les lignes sont plus prometteuses que les collones
         if max(lin_you_nb) >= max(col_you_nb): 
