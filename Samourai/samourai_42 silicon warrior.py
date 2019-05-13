@@ -196,14 +196,22 @@ class Server:
             if deja_aligne == list(range(1,5)):  # tt serree vers le bas 
                 if game_island_tr[the_col][0] == None:
                     return {"move": {"cube": grid_island_tr[the_col][0],"direction": 'S'},"message": "checkmate"}
+<<<<<<< HEAD:Samourai/samourai_42 silicon warrior.py
         #if you == 0:
         ## y'a t'il une défaite immediate ?
         if max(lin_adv_nb) == 4 :
+=======
+                  
+
+        ## y'a t'il une défaite immediate ?
+        if max(lin_adv_nb) == 4:
+>>>>>>> c6d8de994d06e11c5b40874bd1477ebf767ca73a:Samourai/samourai_evolution.py
             the_line = lin_adv_nb.index(4) # ligne menacant le mat
             for j in range(5): # parcour de la ligne problematique
                 if game_island[the_line][j] == adv:
                     if the_line != 0 and game_island[the_line - 1][j] != adv: # faudrait lui realigner le pion
                         if game_island[4][j] == None or game_island[4][j] == you: # coup valide
+<<<<<<< HEAD:Samourai/samourai_42 silicon warrior.py
                             return {"move": {"cube": grid_island[4][j],"direction": 'N'},"message": "Bien essayé..."}
                     if the_line == 0:
                         if game_island[4][j] == None or game_island[4][j] == you: # coup valide
@@ -215,12 +223,25 @@ class Server:
                         if game_island[0][j] == None or game_island[0][j] == you: # coup valide
                             return {"move": {"cube": grid_island[0][j],"direction": 'S'},"message": "Bien essayé..."}
 
+=======
+                            return {"move": {"cube": grid_island[4][j],"direction": 'N'},"message": "Bien essayé"}
+                    if the_line == 0:
+                        if game_island[4][j] == None or game_island[4][j] == you: # coup valide
+                            return {"move": {"cube": grid_island[4][j],"direction": 'N'},"message": "Bien essayé"}
+                    if the_line !=4 and game_island[the_line + 1][j] != adv:
+                        if game_island[0][j] == None or game_island[0][j] == you: # coup valide
+                            return {"move": {"cube": grid_island[0][j],"direction": 'S'},"message": "Bien essayé"}
+                    if the_line == 4:
+                        if game_island[0][j] == None or game_island[0][j] == you: # coup valide
+                            return {"move": {"cube": grid_island[0][j],"direction": 'S'},"message": "Bien essayé"}
+>>>>>>> c6d8de994d06e11c5b40874bd1477ebf767ca73a:Samourai/samourai_evolution.py
         if max(col_adv_nb) == 4:
             the_col = col_adv_nb.index(4) # collonne menacant de mat
             for i in range(5): # parcour de la collonne problematique 
                 if game_island_tr[the_col][i] == adv:
                     if the_col != 0 and game_island_tr[the_col - 1][i] != adv:
                         if game_island_tr[4][i] == None or game_island_tr[4][i] == you: # coup valide
+<<<<<<< HEAD:Samourai/samourai_42 silicon warrior.py
                             return {"move": {"cube": grid_island_tr[4][i],"direction": 'W'},"message": "Bien essayé..."}
                     if the_col == 0:
                         if game_island_tr[4][i] == None or game_island_tr[4][i] == you: # coup valide
@@ -232,6 +253,18 @@ class Server:
                         if game_island_tr[0][i] == None or game_island_tr[0][i] == you: #coup valide
                             return {"move": {"cube": grid_island_tr[0][i],"direction": 'E'},"message": "Bien essayé..."}                            
  
+=======
+                            return {"move": {"cube": grid_island_tr[4][i],"direction": 'W'},"message": "Bien essayé"}
+                    if the_col == 0:
+                        if game_island_tr[4][i] == None or game_island_tr[4][i] == you: # coup valide
+                            return {"move": {"cube": grid_island_tr[4][i],"direction": 'W'},"message": "Bien essayé"}
+                    if the_col != 4 and game_island_tr[the_col + 1][i] != adv:
+                        if game_island_tr[0][i] == None or game_island_tr[0][i] == you: # coup valide
+                            return {"move": {"cube": grid_island_tr[0][i],"direction": 'E'},"message": "Bien essayé"}
+                    if the_col == 4:
+                        if game_island_tr[0][i] == None or game_island_tr[0][i] == you: #coup valide
+                            return {"move": {"cube": grid_island_tr[0][i],"direction": 'E'},"message": "Bien essayé"}                            
+>>>>>>> c6d8de994d06e11c5b40874bd1477ebf767ca73a:Samourai/samourai_evolution.py
 
         ### on joue un coup classique
         ## Situation A : les lignes sont plus prometteuses que les collones
