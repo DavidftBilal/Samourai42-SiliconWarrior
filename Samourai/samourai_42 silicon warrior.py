@@ -156,18 +156,18 @@ class Server:
                             elif game_island[4][4] == None or game_island[4][4] == you:
                                 return {"move": {"cube": grid_island[4][4],"direction": 'W'},"message": "checkmate"}
                         if (i==1 and j == 3) or (i==2 and j == 2) or (i == 3 and j == 1):
-                            if game_island[k-1][k] == you: # il est en echec par le cube au dessus
-                                if game_island[4][k] == you or game_island[4][k] == None: # coup valide
-                                    return {"move": {"cube": grid_island[4][k],"direction": 'N'},"message": "checkmate"} 
-                            if game_island[k][k+1] == you: # il est en echec par le cube à droite
-                                if game_island[k][0] == you or game_island[k][0] == None: #coup valide
-                                    return {"move": {"cube": grid_island[k][0],"direction": 'E'},"message": "checkmate"}
-                            if game_island[k+1][k] == you: # il est en echec par le cube du dessous
-                                if game_island[0][k] == you or game_island[0][k] == None: # coup valide
-                                    return {"move": {"cube": grid_island[0][k],"direction": 'S'},"message": "checkmate"} 
-                            if game_island[k][k-1] == you: # il est en echec par le cube à gauche
-                                if game_island[k][4] == you or game_island[k][4] == None: # coup valide
-                                    return {"move": {"cube": grid_island[k][4],"direction": 'W'},"message": "checkmate"}       
+                            if game_island[i-1][j] == you: # il est en echec par le cube au dessus
+                                if game_island[4][j] == you or game_island[4][j] == None: # coup valide
+                                    return {"move": {"cube": grid_island[4][j],"direction": 'N'},"message": "checkmate"} 
+                            if game_island[i][j+1] == you: # il est en echec par le cube à droite
+                                if game_island[i][0] == you or game_island[i][0] == None: #coup valide
+                                    return {"move": {"cube": grid_island[i][0],"direction": 'E'},"message": "checkmate"}
+                            if game_island[i+1][j] == you: # il est en echec par le cube du dessous
+                                if game_island[0][j] == you or game_island[0][j] == None: # coup valide
+                                    return {"move": {"cube": grid_island[0][j],"direction": 'S'},"message": "checkmate"} 
+                            if game_island[i][j-1] == you: # il est en echec par le cube à gauche
+                                if game_island[i][4] == you or game_island[i][4] == None: # coup valide
+                                    return {"move": {"cube": grid_island[i][4],"direction": 'W'},"message": "checkmate"}       
         ### y'a t-il une victoire immmédiate horizontale ou verticale ?
         if max(lin_you_nb) == 4: 
             the_line = lin_you_nb.index(4) # ligne offrant l'echec et mat
@@ -240,18 +240,18 @@ class Server:
                             elif game_island[4][4] == None or game_island[4][4] == you:
                                 return {"move": {"cube": grid_island[4][4],"direction": 'W'},"message": "checkmate"}
                         if (i==1 and j == 3) or (i==2 and j == 2) or (i == 3 and j == 1):
-                            if game_island[k-1][k] == you: 
-                                if game_island[4][k] == you or game_island[4][k] == None: # coup valide
-                                    return {"move": {"cube": grid_island[4][k],"direction": 'N'},"message": "checkmate"} 
-                            if game_island[k][k+1] == you: 
-                                if game_island[k][0] == you or game_island[k][0] == None: #coup valide
-                                    return {"move": {"cube": grid_island[k][0],"direction": 'E'},"message": "checkmate"}
-                            if game_island[k+1][k] == you: 
-                                if game_island[0][k] == you or game_island[0][k] == None: # coup valide
-                                    return {"move": {"cube": grid_island[0][k],"direction": 'S'},"message": "checkmate"} 
-                            if game_island[k][k-1] == you: 
-                                if game_island[k][4] == you or game_island[k][4] == None: # coup valide
-                                    return {"move": {"cube": grid_island[k][4],"direction": 'W'},"message": "checkmate"}
+                            if game_island[i-1][j] == you: 
+                                if game_island[4][j] == you or game_island[4][j] == None: # coup valide
+                                    return {"move": {"cube": grid_island[4][j],"direction": 'N'},"message": "checkmate"} 
+                            if game_island[i][j+1] == you: 
+                                if game_island[i][0] == you or game_island[i][0] == None: #coup valide
+                                    return {"move": {"cube": grid_island[i][0],"direction": 'E'},"message": "checkmate"}
+                            if game_island[i+1][j] == you: 
+                                if game_island[0][j] == you or game_island[0][j] == None: # coup valide
+                                    return {"move": {"cube": grid_island[0][j],"direction": 'S'},"message": "checkmate"} 
+                            if game_island[i][j-1] == you: 
+                                if game_island[i][4] == you or game_island[i][4] == None: # coup valide
+                                    return {"move": {"cube": grid_island[i][4],"direction": 'W'},"message": "checkmate"}
         ### y'a t'il une défaite immediate horizontale ou verticale ?
         if max(lin_adv_nb) == 4 :
             the_line = lin_adv_nb.index(4) # ligne menacant le mat
@@ -370,5 +370,5 @@ if __name__ == "__main__":
     else:
         port=8080
 
-    cherrypy.config.update({'server.socket_port': '0.0.0.0' ,'server.socket_port': port})
+    cherrypy.config.update({'server.socket_host': '0.0.0.0' ,'server.socket_port': port})
     cherrypy.quickstart(Server())   
