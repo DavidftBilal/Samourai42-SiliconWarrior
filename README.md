@@ -1,4 +1,4 @@
-# Samurai42 Silicon Warrior
+# Samuraï_42 Silicon Warrior
 
 Auteurs: 
 - Amadou Bilal 17060
